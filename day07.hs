@@ -1,18 +1,16 @@
 import Data.List
 import Data.Foldable
 import Data.Maybe
+import Data.Function
 import Control.Applicative
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Sequence (Seq)
 import qualified Data.Sequence as Seq
 
-
-
 type NodeDesc = (String, Int, [Int])
 
-data Node = Node String Int [Node]
-data SummedNode = SummedNode String Int Int [SummedNode]
+data Node = Node String Int [Node] deriving (Show)
 
 solveA :: Node -> String
 solveA (Node name _ _) = name
@@ -21,20 +19,39 @@ nodeSum :: Node -> Int
 nodeSum (Node _ weight children) =
     weight + sum (map nodeSum children)
 
-{--
-solveB :: Node -> Maybe Int
-solveB node@(Node _ weight children) = 
-    let
-        adjustNode targetWeight node =
-            targetWeight - sum (map nodeSum children)
-    in
-        case children of
-            [] -> Nothing
-            [a] -> solveB a
-            [a,b] -> solveB a <|> solveB b <|> Just (adjustNode (nodeSum a) b)
-            otherwise -> 
---}
 
+-- The case branching lower down is still bad, but it can be simplified a lot by the
+-- assumption that there will be exactly one node with an inorrect weight
+solveB :: Ordering -> Node -> Maybe Int
+solveB ord node@(Node name weight children) = 
+    let
+        correctedNodeWeight targetWeight (Node name _ children) =
+            targetWeight - sum (map nodeSum children)
+        sorted = sortBy (compare `on` nodeSum) children
+    in
+        case (sorted, ord) of
+            ([],_) -> Nothing
+            ([a],_) -> solveB ord a
+            ([a,b],EQ) -> solveB LT a <|> solveB GT b
+            ([a,b],_) -> 
+                if nodeSum a == nodeSum b then
+                    Nothing
+                else
+                    case ord of
+                        EQ -> solveB LT a <|> solveB GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
+                        GT -> solveB GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
+                        LT -> solveB LT a <|> (Just $ correctedNodeWeight (nodeSum b) a)
+            ((f:s:_),_) -> 
+                let adjustNode = if nodeSum f == nodeSum s then last sorted else f
+                in 
+                    if nodeSum adjustNode == nodeSum s then
+                        Nothing
+                    else
+                        solveB ((compare `on` nodeSum) adjustNode s) adjustNode
+                            <|> (Just $ correctedNodeWeight (nodeSum s) adjustNode )
+
+
+                    
 
 findRoot :: Seq NodeDesc -> Maybe Int
 findRoot nodes =
@@ -74,4 +91,4 @@ readInput str =
 main :: IO ()
 main = do
     tree <- (buildTree . linkIndexes . readInput) `fmap` getContents
-    print $ solveA <$> tree
+    print $ tree >>= solveB EQ
