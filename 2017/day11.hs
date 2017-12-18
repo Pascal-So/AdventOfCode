@@ -38,10 +38,14 @@ solveB :: [Direction] -> Int
 solveB = 
     maximum . map (dist (0,0)) . scanl move (0,0)
 
-main = do
-    input <- map readDir . words . map (replace ',' ' ') <$> getLine
-    print $ solveB input
-    where 
+readDirs :: String -> [Direction]
+readDirs =
+    map readDir . words . map (replace ',' ' ')
+    where
         replace a b c
             | a == c    = b
-            | otherwise = c 
+            | otherwise = c
+
+main = do
+    input <- readDirs <$> getLine
+    print $ solveB input

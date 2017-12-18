@@ -16,8 +16,16 @@ shiftMatchSum shift nums =
 solveN :: Int -> String -> Int
 solveN n = shiftMatchSum n . map (\c -> read [c])
 
+solveA :: String -> Int
+solveA = solveN 1
+
+solveB :: String -> Int
+solveB input =
+    solveN n input
+    where 
+        n = length input `div` 2
+
 main :: IO ()
 main = do
     input <- getLine
-    let n = length input `div` 2
-    print $ solveN n input
+    print $ solveB input

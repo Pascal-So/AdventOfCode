@@ -12,46 +12,9 @@ type NodeDesc = (String, Int, [Int])
 
 data Node = Node String Int [Node] deriving (Show)
 
-solveA :: Node -> String
-solveA (Node name _ _) = name
-
 nodeSum :: Node -> Int
 nodeSum (Node _ weight children) =
     weight + sum (map nodeSum children)
-
-
--- The case branching lower down is still bad, but it can be simplified a lot by the
--- assumption that there will be exactly one node with an inorrect weight
-solveB :: Ordering -> Node -> Maybe Int
-solveB ord node@(Node name weight children) = 
-    let
-        correctedNodeWeight targetWeight (Node name _ children) =
-            targetWeight - sum (map nodeSum children)
-        sorted = sortBy (compare `on` nodeSum) children
-    in
-        case (sorted, ord) of
-            ([],_) -> Nothing
-            ([a],_) -> solveB ord a
-            ([a,b],EQ) -> solveB LT a <|> solveB GT b
-            ([a,b],_) -> 
-                if nodeSum a == nodeSum b then
-                    Nothing
-                else
-                    case ord of
-                        EQ -> solveB LT a <|> solveB GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
-                        GT -> solveB GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
-                        LT -> solveB LT a <|> (Just $ correctedNodeWeight (nodeSum b) a)
-            ((f:s:_),_) -> 
-                let adjustNode = if nodeSum f == nodeSum s then last sorted else f
-                in 
-                    if nodeSum adjustNode == nodeSum s then
-                        Nothing
-                    else
-                        solveB ((compare `on` nodeSum) adjustNode s) adjustNode
-                            <|> (Just $ correctedNodeWeight (nodeSum s) adjustNode )
-
-
-                    
 
 findRoot :: Seq NodeDesc -> Maybe Int
 findRoot nodes =
@@ -66,7 +29,6 @@ buildTree nodes =
     where
         tree pos = Node name weight $ map tree children
             where (name, weight, children) = Seq.index nodes pos 
-
 
 linkIndexes :: Seq (String, Int, [String]) -> Seq NodeDesc
 linkIndexes nodes = 
@@ -87,8 +49,42 @@ readInput str =
                 weight = read $ tail $ init s_weigh
                 children = map (takeWhile (flip elem ['a'..'z'])) xs
 
+solveA :: Node -> String
+solveA (Node name _ _) = name
+
+-- The case branching lower down is still bad, but it can be simplified a lot by the
+-- assumption that there will be exactly one node with an inorrect weight
+solveB :: Node -> Maybe Int
+solveB = go EQ
+    where
+        go ord node@(Node name weight children) =
+            let
+                correctedNodeWeight targetWeight (Node name _ children) =
+                    targetWeight - sum (map nodeSum children)
+                sorted = sortBy (compare `on` nodeSum) children
+            in
+                case (sorted, ord) of
+                    ([],_) -> Nothing
+                    ([a],_) -> go ord a
+                    ([a,b],EQ) -> go LT a <|> go GT b
+                    ([a,b],_) -> 
+                        if nodeSum a == nodeSum b then
+                            Nothing
+                        else
+                            case ord of
+                                EQ -> go LT a <|> go GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
+                                GT -> go GT b <|> (Just $ correctedNodeWeight (nodeSum a) b)
+                                LT -> go LT a <|> (Just $ correctedNodeWeight (nodeSum b) a)
+                    ((f:s:_),_) -> 
+                        let adjustNode = if nodeSum f == nodeSum s then last sorted else f
+                        in 
+                            if nodeSum adjustNode == nodeSum s then
+                                Nothing
+                            else
+                                go ((compare `on` nodeSum) adjustNode s) adjustNode
+                                    <|> (Just $ correctedNodeWeight (nodeSum s) adjustNode )
 
 main :: IO ()
 main = do
     tree <- (buildTree . linkIndexes . readInput) `fmap` getContents
-    print $ tree >>= solveB EQ
+    print $ solveA <$> tree

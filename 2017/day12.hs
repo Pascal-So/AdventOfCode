@@ -1,5 +1,3 @@
-{-# LANGUAGE ViewPatterns #-}
-
 import Data.Graph.Inductive
 
 solveA :: Gr n e -> Int

@@ -12,8 +12,15 @@ validPhrase xs =
                 distinct (b:xs)
         distinct _ = True
 
+solveA :: [[String]] -> Int
+solveA =
+    length . filter validPhrase
+
+solveB :: [[String]] -> Int
+solveB = 
+    length . filter (validPhrase . map sort)
 
 main :: IO ()
 main = do
-    phrases <- lines <$> getContents
-    print $ length $ filter (validPhrase . map sort . words) phrases
+    input <- map words . lines <$> getContents
+    print $ solveA input

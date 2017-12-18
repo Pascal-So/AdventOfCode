@@ -97,8 +97,10 @@ solveB cmds =
                 newmem = runCommand mem cmd
                 newmax = max maxval $ biggestRegisterVal newmem
 
+readCommands :: String -> [Command]
+readCommands =
+    catMaybes . map readCommand . lines
 
 main = do
-    input <- getContents
-    let cmds = catMaybes $ map readCommand $ lines input
-    print $ solveB cmds
+    input <- readCommands <$> getContents
+    print $ solveB input

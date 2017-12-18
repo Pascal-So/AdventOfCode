@@ -194,4 +194,4 @@ readInput =
 
 main = do
     input <- readInput <$> getContents
-    print $ solveA input
+    print $ solveB input

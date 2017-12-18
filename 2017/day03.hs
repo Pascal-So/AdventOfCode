@@ -18,7 +18,6 @@ posInLevel n =
         lev = level n
         prevLimit = levelLimits !! (lev - 1)
 
-
 rot :: MemPos -> MemPos
 rot (x,y) = (-y,x)
 
@@ -51,11 +50,6 @@ posToAddress (x,y) =
         else
             8 * lev - dist
 
-
-solveA :: Int -> Int
-solveA n =
-    memDist (0,0) $ addressToPos n
-
 getAdjacents :: MemPos -> [MemPos]
 getAdjacents p@(x,y) =
     let
@@ -69,10 +63,14 @@ stressTest =
     where
         sumAddresses = map (map posToAddress . getAdjacents . addressToPos) [2..]
 
+solveA :: Int -> Int
+solveA n =
+    memDist (0,0) $ addressToPos n
 
 solveB :: Int -> Int
 solveB n =
     head $ dropWhile (< n) stressTest
 
-main :: IO ()
-main = readLn >>= print . solveA
+main = do
+    input <- readLn
+    print $ solveB input

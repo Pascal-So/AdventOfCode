@@ -17,4 +17,6 @@ solveA str =
 solveB :: String -> String
 solveB = hash
 
-main = getLine >>= putStrLn . solveB
+main = do
+    input <- getLine
+    print $ solveB input

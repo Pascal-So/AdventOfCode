@@ -38,5 +38,5 @@ solveB mov =
                 newpos = (pos + mov) `mod` len
 
 main = do
-    n <- readLn :: IO Int
+    n <- readLn
     print $ solveB n
