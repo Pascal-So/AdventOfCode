@@ -1,4 +1,4 @@
-module Year2017.Day17 where
+module Year2017.Day17 (solveA, solveB) where
 
 import Data.Sequence (Seq, (><))
 import qualified Data.Sequence as Seq
@@ -21,16 +21,18 @@ finalBuffer :: Int -> Buffer
 finalBuffer n =
     foldl' (\buf x ->  insert x $ step n buf) (Seq.empty,0) [0..2017]
 
-solveA :: Int -> Int
-solveA n =
+solveA :: String -> Int
+solveA input =
     Seq.index xs $ (pos + 1) `mod` (length xs)
     where
+        n = read input
         (xs, pos) = finalBuffer n
 
-solveB :: Int -> Int
-solveB mov =
+solveB :: String -> Int
+solveB input =
     fst $ foldl' go (1,1) [2 .. 50*1000*1000]
     where
+        mov = read input
         go (acc,pos) len =
             if newpos == 0 then
                 (len, 1)
@@ -38,7 +40,3 @@ solveB mov =
                 (acc, newpos + 1)
             where
                 newpos = (pos + mov) `mod` len
-
-main = do
-    n <- readLn
-    print $ solveB n

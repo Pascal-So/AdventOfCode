@@ -1,4 +1,4 @@
-module Year2017.Day14 where
+module Year2017.Day14 (solveA, solveB) where
 
 import KnotHash (hash)
 import Data.Maybe
@@ -51,14 +51,9 @@ getEdges grid =
 toGraph :: Grid -> Gr () ()
 toGraph grid = mkUGraph (getNodes grid) (getEdges grid)
 
-solveA :: Grid -> Int
+solveA :: String -> Int
 solveA =
-    sum . map (length . filter id)
+    sum . map (length . filter id) . getGrid
 
-solveB :: Grid -> Int
-solveB = length . components . toGraph
-
-main :: IO ()
-main = do
-    input <- getGrid <$> getLine
-    print $ solveB input
+solveB :: String -> Int
+solveB = length . components . toGraph . getGrid

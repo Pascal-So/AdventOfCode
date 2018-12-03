@@ -1,4 +1,4 @@
-module Year2016.Day03 where
+module Year2016.Day03 (solveA, solveB) where
 
 import Data.List
 
@@ -17,15 +17,13 @@ groupsOf n xs =
     else
         [xs]
 
-solveA :: [[Int]] -> Int
+readInput :: String -> [[Int]]
+readInput = map (map read . words) . lines
+
+solveA :: String -> Int
 solveA =
-    length . filter isTriangle
+    length . filter isTriangle . readInput
 
-solveB :: [[Int]] -> Int
+solveB :: String -> Int
 solveB =
-    solveA . groupsOf 3 . concat . transpose
-
-main = do
-    input <- map (map read . words) . lines <$> getContents
-    print $ solveB input
-
+    length . filter isTriangle . groupsOf 3 . concat . transpose . readInput

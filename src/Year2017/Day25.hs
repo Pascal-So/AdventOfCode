@@ -1,4 +1,4 @@
-module Year2017.Day25 where
+module Year2017.Day25 (solveA) where
 
 import Tape (Tape)
 import qualified Tape

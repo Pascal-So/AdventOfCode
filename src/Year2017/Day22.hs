@@ -1,4 +1,4 @@
-module Year2017.Day22 where
+module Year2017.Day22 (solveA, solveB) where
 
 import TwoWayList (TWL)
 import qualified TwoWayList as TWL

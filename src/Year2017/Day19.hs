@@ -1,4 +1,4 @@
-module Year2017.Day19 where
+module Year2017.Day19 (solveA, solveB) where
 
 import Data.Sequence (Seq)
 import qualified Data.Sequence as Seq

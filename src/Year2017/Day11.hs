@@ -1,4 +1,4 @@
-module Year2017.Day11 where
+module Year2017.Day11 (solveA, solveB) where
 
 import Data.List
 
@@ -32,13 +32,6 @@ dist (xa, ya) (xb, yb) =
         dx = (xb - xa)
         dy = (yb - ya)
 
-solveA :: [Direction] -> Int
-solveA =
-    dist (0,0) . foldl' move (0,0)
-
-solveB :: [Direction] -> Int
-solveB =
-    maximum . map (dist (0,0)) . scanl move (0,0)
 
 readDirs :: String -> [Direction]
 readDirs =
@@ -48,6 +41,10 @@ readDirs =
             | a == c    = b
             | otherwise = c
 
-main = do
-    input <- readDirs <$> getLine
-    print $ solveB input
+solveA :: String -> Int
+solveA =
+    dist (0,0) . foldl' move (0,0) . readDirs
+
+solveB :: String -> Int
+solveB =
+    maximum . map (dist (0,0)) . scanl move (0,0) . readDirs

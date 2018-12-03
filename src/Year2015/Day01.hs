@@ -1,3 +1,5 @@
+module Year2015.Day01 (solveA, solveB) where
+
 import Data.List
 
 moveBy :: Char -> Int
@@ -9,10 +11,10 @@ solveA :: String -> Int
 solveA = sum . map moveBy
 
 solveB :: String -> Maybe Int
-solveB lst = 
+solveB lst =
     elemIndex (-1) pref
     where pref = scanl (+) 0 $ map moveBy lst
-    
+
 
 main = do
     input <- getLine

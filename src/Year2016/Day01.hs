@@ -1,4 +1,4 @@
-module Year2016.Day01 where
+module Year2016.Day01 (solveA, solveB) where
 
 import Data.List
 import Data.Maybe
@@ -79,13 +79,12 @@ firstIntersection lst =
 
 
 
-solveA :: [Instruction] -> Int
-solveA = manhattan (0,0) . fst . foldl' followInstruction ((0,0), 0)
+solveA :: String -> Int
+solveA = manhattan (0,0) . fst . foldl' followInstruction ((0,0), 0) . readInstructions
 
-solveB :: [Instruction] -> Maybe Int
-solveB inst = manhattan (0,0) <$> firstIntersection all
+solveB :: String -> Maybe Int
+solveB input = manhattan (0,0) <$> firstIntersection all
     where
+        inst = readInstructions input
         (positions, _:headings) = unzip (scanl followInstruction ((0,0), 0) inst)
         all = zip3 positions headings $ map ((\x -> x- 1) . snd) inst
-
-main = getLine >>= print . solveB . readInstructions

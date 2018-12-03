@@ -1,4 +1,4 @@
-module Year2016.Day02 where
+module Year2016.Day02 (solveA, solveB) where
 
 import Data.List
 import Data.Char
@@ -67,6 +67,3 @@ solveA = solve moveA pressKeyA (0,0)
 
 solveB :: String -> String
 solveB = solve moveB pressKeyB (-2,0)
-
-
-main = getContents >>= print . solveB

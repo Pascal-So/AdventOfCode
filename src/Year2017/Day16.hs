@@ -1,4 +1,4 @@
-module Year2017.Day16 where
+module Year2017.Day16 (solveA, solveB) where
 
 import Data.Sequence (Seq, (><))
 import qualified Data.Sequence as Seq
@@ -7,7 +7,6 @@ import Data.Foldable
 import Data.Char
 
 data Instruction = Spin Int | Exchange Int Int | Partner Char Char
-
 
 spin :: Int -> Seq a -> Seq a
 spin n xs =
@@ -66,13 +65,16 @@ startArrangement =
 showArrangement :: Seq Char -> String
 showArrangement = toList
 
-solveA :: [Instruction] -> Seq Char -> Seq Char
-solveA insts init = foldl (flip runInstruction) init insts
+solveDance :: Seq Char -> [Instruction] -> Seq Char
+solveDance = foldl (flip runInstruction)
 
-solveB :: [Instruction] -> Seq Char -> Seq Char
-solveB insts init =
-    (iterate (solveA insts) init) !! (1000000000 `mod` 36)
+solveA :: String -> String
+solveA =
+    showArrangement . solveDance startArrangement . readInput
 
-main = do
-    input <- readInput <$> getLine
-    print $ solveB input startArrangement
+solveB :: String -> String
+solveB input =
+    showArrangement result
+    where
+        insts = readInput input
+        result = (iterate (flip solveDance insts) startArrangement) !! (1000000000 `mod` 36)

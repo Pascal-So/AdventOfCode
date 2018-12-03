@@ -1,4 +1,4 @@
-module Year2017.Day24 where
+module Year2017.Day24 (solveA, solveB) where
 
 import Data.Graph.Inductive hiding (getNodes)
 import Data.List     as List

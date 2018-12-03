@@ -1,4 +1,4 @@
-module Year2017.Day15 where
+module Year2017.Day15 (solveA, solveB) where
 
 import Numeric
 import Data.Char
@@ -26,24 +26,22 @@ lowEqual a b =
 countMatching :: [(Int, Int)] -> Int
 countMatching = length . filter (uncurry lowEqual)
 
-solveA :: (Int, Int) -> Int
-solveA (startA, startB) = countMatching . take 40000000 $ pairs
-    where
-        pairs = zip (iterate generatorA startA) (iterate generatorB startB)
-
-solveB :: (Int, Int) -> Int
-solveB (startA, startB) =
-    countMatching . take 5000000 $ zip numsA numsB
-    where
-        numsA = filter (\n -> n `mod` 4 == 0) $ iterate generatorA startA
-        numsB = filter (\n -> n `mod` 8 == 0) $ iterate generatorB startB
-
 readInput :: String -> (Int, Int)
 readInput str =
     (read (w!!4), read (w!!9))
     where
         w = words str
 
-main = do
-    input <- readInput <$> getContents
-    print $ solveB input
+solveA :: String -> Int
+solveA input = countMatching . take 40000000 $ pairs
+    where
+        (startA, startB) = readInput input
+        pairs = zip (iterate generatorA startA) (iterate generatorB startB)
+
+solveB :: String -> Int
+solveB input =
+    countMatching . take 5000000 $ zip numsA numsB
+    where
+        (startA, startB) = readInput input
+        numsA = filter (\n -> n `mod` 4 == 0) $ iterate generatorA startA
+        numsB = filter (\n -> n `mod` 8 == 0) $ iterate generatorB startB

@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Year2017.Day23 where
+module Year2017.Day23 (solveA, solveB) where
 
 import Data.Numbers.Primes
 import Data.Sequence (Seq)

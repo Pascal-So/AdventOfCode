@@ -1,4 +1,4 @@
-module Year2017.Day20 where
+module Year2017.Day20 (solveA, solveB) where
 
 import qualified Data.List as List
 import qualified Text.Parsec as Parsec

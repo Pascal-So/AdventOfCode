@@ -1,4 +1,4 @@
-module Year2017.Day21 where
+module Year2017.Day21 (solveA, solveB) where
 
 import Prelude hiding (flip)
 import qualified Data.List as List

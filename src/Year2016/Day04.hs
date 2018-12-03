@@ -1,4 +1,4 @@
-module Year2016.Day04 where
+module Year2016.Day04 (solveA, solveB) where
 
 import Data.Char (ord, chr)
 import Data.Function
@@ -39,12 +39,15 @@ decrypt (Room name id _) =
     where
         dec c = if c == '-' then ' ' else rotN id c
 
-solveA :: [Room] -> Int
-solveA = sum . map (\(Room _ id _) -> id) . filter realRoom
+readInput :: String -> [Room]
+readInput = map parseRoom . lines
 
-solveB :: [Room] -> Maybe Room
-solveB = find (\r -> decrypt r == "northpole object storage") . filter realRoom
+solveA :: String -> Int
+solveA = sum . map (\(Room _ id _) -> id) . filter realRoom . readInput
 
-main = do
-    rooms <- map parseRoom . lines <$> getContents
-    print $ solveB rooms
+solveB :: String -> Int
+solveB input = roomId
+    where
+        rooms = readInput input
+        realRooms = filter realRoom rooms
+        Just (Room _ roomId _) = find (\r -> decrypt r == "northpole object storage") realRooms

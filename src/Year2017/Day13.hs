@@ -1,4 +1,4 @@
-module Year2017.Day13 where
+module Year2017.Day13 (solveA, solveB) where
 
 type Layer = (Int, Int)
 
@@ -20,14 +20,11 @@ parseLayers :: String -> [Layer]
 parseLayers =
     map (\[a,b] -> (a,b)) . map (map (read . takeWhile (/= ':')) . words) . lines
 
-solveA :: [Layer] -> Int
-solveA = sum . map (cost 0)
+solveA :: String -> Int
+solveA = sum . map (cost 0) . parseLayers
 
-solveB :: [Layer] -> Int
-solveB layers =
+solveB :: String -> Int
+solveB input =
     head $ filter (\n -> not $ any (caught n) layers) [0..]
-
-main :: IO ()
-main = do
-    input <- parseLayers <$> getContents
-    print $ solveB input
+    where
+        layers = parseLayers input
