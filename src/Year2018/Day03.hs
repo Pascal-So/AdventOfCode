@@ -1,35 +1,51 @@
 module Year2018.Day03 where
 
 import Data.Void (Void)
-import Text.Megaparsec (Parsec)
+import Text.Megaparsec (Parsec, parse, sepEndBy1, eof)
 import Text.Megaparsec.Char
--- import qualified Text.Megaparsec.Char.Lexer as L
+import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Error
 
--- type Parser = Parsec Void String
+type Parser = Parsec Void String
 
--- symbol :: String -> Parser String
--- symbol = L.symbol space1
+number :: Parser Int
+number = L.decimal
 
--- lexeme :: Parser a -> Parser a
--- lexeme = L.lexeme space1
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme space1
 
--- data Rectangle = Rectangle { left :: Int
---                            , top :: Int
---                            , width :: Int
---                            , height :: Int
---                            } deriving (Show)
+data Rectangle = Rectangle { left :: Int
+                           , top :: Int
+                           , width :: Int
+                           , height :: Int
+                           } deriving (Show)
 
--- parseLine :: Parser (Int, Rectangle)
--- parseLine = do
---     symbol "#"
---     i <- lexeme L.decimal
---     symbol "@"
---     l <- lexeme L.decimal
---     symbol ","
---     t <- lexeme L.decimal
---     symbol ":"
---     w <- lexeme L.decimal
---     symbol "x"
---     h <- lexeme L.decimal
+parseLine :: Parser (Int, Rectangle)
+parseLine = do
+    char '#'
+    i <- number
+    space1
+    char '@'
+    space1
+    l <- number
+    char ','
+    t <- number
+    char ':'
+    space1
+    w <- number
+    char 'x'
+    h <- number
 
---     return (i, Rectangle l t w h)
+    return (i, Rectangle l t w h)
+
+readInput :: String -> [(Int, Rectangle)]
+readInput input =
+    case parse ((sepEndBy1 parseLine newline) <* eof) "problem input" input of
+        Left err  -> error $ parseErrorPretty err
+        Right res -> res
+
+solveA :: String -> Int
+solveA input = 0
+
+solveB :: String -> Int
+solveB input = 0
