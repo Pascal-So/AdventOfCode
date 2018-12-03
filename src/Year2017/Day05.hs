@@ -1,4 +1,4 @@
-module Year2017.Day05 where
+module Year2017.Day05 (solveA, solveB) where
 
 import Control.Monad.State
 import Data.Sequence (Seq)
@@ -24,14 +24,10 @@ readMaze :: String -> Maze
 readMaze =
     Seq.fromList . map read . lines
 
-solveA :: Maze -> Int
-solveA maze =
-    fst $ runState (jump 1) (maze, 0, 0)
+solveA :: String -> Int
+solveA input =
+    fst $ runState (jump 1) (readMaze input, 0, 0)
 
-solveB :: Maze -> Int
-solveB maze =
-    fst $ runState (jump (-1)) (maze, 0, 0)
-
-main = do
-    input <- readMaze <$> getContents
-    print $ solveA input
+solveB :: String -> Int
+solveB input =
+    fst $ runState (jump (-1)) (readMaze input, 0, 0)

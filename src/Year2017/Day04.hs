@@ -1,4 +1,4 @@
-module Year2017.Day04 where
+module Year2017.Day04 (solveA, solveB) where
 
 import Data.List
 import Control.Applicative
@@ -14,15 +14,10 @@ validPhrase xs =
                 distinct (b:xs)
         distinct _ = True
 
-solveA :: [[String]] -> Int
+solveA :: String -> Int
 solveA =
-    length . filter validPhrase
+    length . filter validPhrase . map words . lines
 
-solveB :: [[String]] -> Int
+solveB :: String -> Int
 solveB =
-    length . filter (validPhrase . map sort)
-
-main :: IO ()
-main = do
-    input <- map words . lines <$> getContents
-    print $ solveA input
+    length . filter (validPhrase . map sort) . map words . lines

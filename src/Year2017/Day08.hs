@@ -1,4 +1,4 @@
-module Year2017.Day08 where
+module Year2017.Day08 (solveA, solveB) where
 
 import Data.Maybe
 
@@ -84,14 +84,21 @@ runCommand mem (Command name diff cond) =
 biggestRegisterVal :: Memory -> Int
 biggestRegisterVal = maximum . Map.elems
 
-solveA :: [Command] -> Int
-solveA cmds =
-    biggestRegisterVal $ foldl runCommand (initMemory cmds) cmds
+readCommands :: String -> [Command]
+readCommands =
+    catMaybes . map readCommand . lines
 
-solveB :: [Command] -> Int
-solveB cmds =
+solveA :: String -> Int
+solveA input =
+    biggestRegisterVal $ foldl runCommand (initMemory cmds) cmds
+    where
+        cmds = readCommands input
+
+solveB :: String -> Int
+solveB input =
     snd $ foldl f init cmds
     where
+        cmds = readCommands input
         init = (initMemory cmds, 0)
         f (mem, maxval) cmd =
             (newmem, newmax)
@@ -99,10 +106,3 @@ solveB cmds =
                 newmem = runCommand mem cmd
                 newmax = max maxval $ biggestRegisterVal newmem
 
-readCommands :: String -> [Command]
-readCommands =
-    catMaybes . map readCommand . lines
-
-main = do
-    input <- readCommands <$> getContents
-    print $ solveB input

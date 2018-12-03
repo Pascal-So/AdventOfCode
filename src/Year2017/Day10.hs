@@ -1,4 +1,4 @@
-module Year2017.Day10 where
+module Year2017.Day10 (solveA, solveB) where
 
 import KnotHash
 
@@ -18,7 +18,3 @@ solveA str =
 
 solveB :: String -> String
 solveB = hash
-
-main = do
-    input <- getLine
-    print $ solveB input

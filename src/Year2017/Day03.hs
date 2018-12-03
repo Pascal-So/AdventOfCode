@@ -1,9 +1,9 @@
-module Year2017.Day03 where
+module Year2017.Day03 (solveA, solveB) where
 
 type MemPos = (Int, Int)
 
 levelLimits :: [Int]
-levelLimits = 
+levelLimits =
     1 : [4*(x+1)*x + 1 | x <- [1..]]
 
 level :: Int -> Int
@@ -63,14 +63,10 @@ stressTest =
     where
         sumAddresses = map (map posToAddress . getAdjacents . addressToPos) [2..]
 
-solveA :: Int -> Int
+solveA :: String -> Int
 solveA n =
-    memDist (0,0) $ addressToPos n
+    memDist (0,0) $ addressToPos $ read n
 
-solveB :: Int -> Int
+solveB :: String -> Int
 solveB n =
-    head $ dropWhile (< n) stressTest
-
-main = do
-    input <- readLn
-    print $ solveB input
+    head $ dropWhile (< read n) stressTest

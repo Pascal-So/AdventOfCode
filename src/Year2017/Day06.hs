@@ -1,4 +1,4 @@
-module Year2017.Day06 where
+module Year2017.Day06 (solveA, solveB) where
 
 import Data.List
 import Data.Maybe
@@ -29,14 +29,10 @@ getFirstDupPair lst =
             (\i -> (i,length lst - 1)) `fmap` maybeFstIndex
             where maybeFstIndex = (elemIndex (last lst) (init lst))
 
-solveB :: [Int] -> Int
+solveB :: String -> Int
 solveB =
-    (\(f,s) -> s - f) . getFirstDupPair . iterate step
+    (\(f,s) -> s - f) . getFirstDupPair . iterate step . map read . words
 
-solveA :: [Int] -> Int
+solveA :: String -> Int
 solveA =
-    snd . getFirstDupPair . iterate step
-
-main = do
-    input <- map read . words <$> getLine
-    print $ solveB input
+    snd . getFirstDupPair . iterate step . map read . words

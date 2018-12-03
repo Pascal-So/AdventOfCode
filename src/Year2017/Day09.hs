@@ -1,4 +1,4 @@
-module Year2017.Day09 where
+module Year2017.Day09 (solveA, solveB) where
 
 import Data.List (intercalate)
 import Text.Parsec (Parsec)
@@ -55,12 +55,8 @@ countGarbage :: Stream -> Int
 countGarbage (Garbage g) = length [c | NormalChar c <- g]
 countGarbage (Group gs)  = sum $ map countGarbage gs
 
-solveA :: Stream -> Int
-solveA = countGroups 1
+solveA :: String -> Int
+solveA = countGroups 1 . read
 
-solveB :: Stream -> Int
-solveB = countGarbage
-
-main = do
-    input <- readLn
-    print $ solveB input
+solveB :: String -> Int
+solveB = countGarbage . read

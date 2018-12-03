@@ -1,5 +1,7 @@
 module Year2017.Day01 (solveA, solveB) where
 
+import Data.Char (ord)
+
 shiftBy :: Int -> [a] -> [a]
 shiftBy n as =
     end ++ begin
@@ -14,7 +16,7 @@ shiftMatchSum shift nums =
         zipped = zip nums $ shiftBy shift nums
 
 solveN :: Int -> String -> Int
-solveN n = shiftMatchSum n . map (\c -> read [c])
+solveN n = shiftMatchSum n . map (\c -> ord c - ord '0') . filter (`elem` ['0' .. '9'])
 
 solveA :: String -> Int
 solveA = solveN 1

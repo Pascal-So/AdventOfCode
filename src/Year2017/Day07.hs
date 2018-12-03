@@ -1,10 +1,11 @@
-module Year2017.Day07 where
+module Year2017.Day07 (solveA, solveB) where
 
 import Data.List
 import Data.Foldable
 import Data.Maybe
 import Data.Function
 import Control.Applicative
+import Control.Monad ((>=>))
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Sequence (Seq)
@@ -51,13 +52,15 @@ readInput str =
                 weight = read $ tail $ init s_weigh
                 children = map (takeWhile (flip elem ['a'..'z'])) xs
 
-solveA :: Node -> String
-solveA (Node name _ _) = name
+solveA :: String -> String
+solveA input =
+    case buildTree . linkIndexes $ readInput input of
+        Just (Node name _ _) -> name
 
 -- The case branching lower down is still bad, but it can be simplified a lot by the
 -- assumption that there will be exactly one node with an inorrect weight
-solveB :: Node -> Maybe Int
-solveB = go EQ
+solveB :: String -> Maybe Int
+solveB = (buildTree . linkIndexes . readInput) >=> go EQ
     where
         go ord node@(Node name weight children) =
             let
@@ -85,8 +88,3 @@ solveB = go EQ
                             else
                                 go ((compare `on` nodeSum) adjustNode s) adjustNode
                                     <|> (Just $ correctedNodeWeight (nodeSum s) adjustNode )
-
-main :: IO ()
-main = do
-    tree <- (buildTree . linkIndexes . readInput) `fmap` getContents
-    print $ solveA <$> tree
