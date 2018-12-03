@@ -64,19 +64,17 @@ walkPath b init =
     where
         tileAt' = tileAt b
 
-solveA :: Board -> String
-solveA b =
-    [x | Letter x <- (map tileAt' $ walkPath b init)]
+solveA :: String -> String
+solveA input =
+    [x | Letter x <- (map tileAt' $ walkPath board init)]
     where
-        tileAt' = tileAt b
-        init = ((getStart b, 0), (0,1))
+        board = readBoard input
+        tileAt' = tileAt board
+        init = ((getStart board, 0), (0,1))
 
-solveB :: Board -> Int
-solveB b =
-    length $ walkPath b init
+solveB :: String -> Int
+solveB input =
+    length $ walkPath board init
     where
-        init = ((getStart b, 0), (0,1))
-
-main = do
-    input <- readBoard <$> getContents
-    print $ solveB input
+        board = readBoard input
+        init = ((getStart board, 0), (0,1))

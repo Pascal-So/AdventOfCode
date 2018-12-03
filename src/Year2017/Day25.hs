@@ -40,9 +40,8 @@ initial :: Machine
 initial = (A, tape) where
     tape = Tape.fromList [False]
 
-solveA :: Int -> Int
-solveA steps =
+solveA :: () -> Int
+solveA _ =
     checksum $ foldr (.) id (replicate steps step) initial
-
-main = do
-    print $ solveA 12656374
+    where
+        steps = 12656374

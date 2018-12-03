@@ -57,19 +57,6 @@ initSquare =
     , [True,  True,  True ]
     ]
 
-solveA :: [Rule] -> Int
-solveA rules =
-    sum $ map (length . filter id) final
-    where
-        final = (iterate (step rules) initSquare) !! 5
-
-solveB :: [Rule] -> Int
-solveB rules =
-    sum $ map (length . filter id) final
-    where
-        final = (iterate (step rules) initSquare) !! 18
-
-
 lineToSquare :: String -> Square
 lineToSquare str =
     map (map ((== '#') . snd)) . List.groupBy ((==)`on`fst) $ numbered
@@ -88,6 +75,16 @@ readInput :: String -> [Rule]
 readInput =
     map readRule . lines
 
-main = do
-    input <- readInput <$> getContents
-    print $ solveB $ input
+solveA :: String -> Int
+solveA input =
+    sum $ map (length . filter id) final
+    where
+        rules = readInput input
+        final = (iterate (step rules) initSquare) !! 5
+
+solveB :: String -> Int
+solveB input =
+    sum $ map (length . filter id) final
+    where
+        rules = readInput input
+        final = (iterate (step rules) initSquare) !! 18

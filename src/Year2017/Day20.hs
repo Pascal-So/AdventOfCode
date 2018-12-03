@@ -115,24 +115,6 @@ allCollisions parts =
         collideOthers p@(idx, part) =
             collide2 p =<< (take idx $ zip [0..] parts)
 
-solveA :: [Particle] -> Int
-solveA parts =
-    snd $ head $ List.sort $ zip (map (sum . map abs . _acceleration) parts) [0..]
-
-solveB :: [Particle] -> Int
-solveB parts =
-    Seq.length $ Seq.filter id $ List.foldl' eliminate start $ dropWhile (\(a,_) -> a < 0) $ allCollisions parts
-    where
-        start = Seq.fromList $ replicate (length parts) True
-        eliminate :: Seq Bool -> (Int, [Int]) -> Seq Bool
-        eliminate alive (_,colliding) =
-            if nrAlive > 1 then
-                foldr ($) alive $ map (\x -> Seq.update x False) colliding
-            else
-                alive
-            where
-                nrAlive = length $ filter id $ map (Seq.index alive) colliding
-
 parseInt :: Parsec String () Int
 parseInt = do
     Parsec.spaces
@@ -165,6 +147,23 @@ readParticles :: String -> [Particle]
 readParticles str =
     Either.rights $ map (Parsec.parse parseParticle "") $ lines str
 
-main = do
-    input <- readParticles <$> getContents
-    print $ solveB input
+solveA :: String -> Int
+solveA input =
+    snd $ head $ List.sort $ zip (map (sum . map abs . _acceleration) parts) [0..]
+    where
+        parts = readParticles input
+
+solveB :: String -> Int
+solveB input =
+    Seq.length $ Seq.filter id $ List.foldl' eliminate start $ dropWhile (\(a,_) -> a < 0) $ allCollisions parts
+    where
+        parts = readParticles input
+        start = Seq.fromList $ replicate (length parts) True
+        eliminate :: Seq Bool -> (Int, [Int]) -> Seq Bool
+        eliminate alive (_,colliding) =
+            if nrAlive > 1 then
+                foldr ($) alive $ map (\x -> Seq.update x False) colliding
+            else
+                alive
+            where
+                nrAlive = length $ filter id $ map (Seq.index alive) colliding

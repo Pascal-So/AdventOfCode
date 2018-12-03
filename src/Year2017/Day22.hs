@@ -66,14 +66,6 @@ step subtask (g, p, d) =
         newd = turn state d
         newg = adjustGrid g p (modifyState subtask)
 
-solveA :: Grid -> Int
-solveA grid =
-    length . filter (== Clean) . take 10000 . map (\(g,p,_) -> lookupGrid g p) $ iterate (step TaskA) $ initSimState grid
-
-solveB :: Grid -> Int
-solveB grid =
-    length . filter (== Weakened) . take 10000000 . map (\(g,p,_) -> lookupGrid g p) $ iterate (step TaskB) $ initSimState grid
-
 center :: TWL a -> TWL a
 center lst =
     TWL.shift (TWL.length lst `div` 2) lst
@@ -88,6 +80,14 @@ readGrid =
             where
                 (l,r) = TWL.toLists $ center $ TWL.fromList content
 
-main = do
-    input <- readGrid <$> getContents
-    print $ solveB input
+solveA :: String -> Int
+solveA input =
+    length . filter (== Clean) . take 10000 . map (\(g,p,_) -> lookupGrid g p) $ iterate (step TaskA) $ initSimState grid
+    where
+        grid = readGrid input
+
+solveB :: String -> Int
+solveB input =
+    length . filter (== Weakened) . take 10000000 . map (\(g,p,_) -> lookupGrid g p) $ iterate (step TaskB) $ initSimState grid
+    where
+        grid = readGrid input

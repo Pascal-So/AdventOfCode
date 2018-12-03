@@ -60,14 +60,6 @@ getPaths conn =
         edges = getEdges nodes
         graph = mkGraph nodes edges
 
-solveA :: [Connector] -> Int
-solveA conn =
-    maximum $ map pathStrength $ getPaths conn
-
-solveB :: [Connector] -> Int
-solveB conn =
-    pathStrength $ last $ sortOn length $ sortOn pathStrength $ getPaths conn
-
 readConnector :: String -> Connector
 readConnector str =
     (read left, read $ tail right)
@@ -78,6 +70,10 @@ readInput :: String -> [Connector]
 readInput =
     map readConnector . lines
 
-main = do
-    input <- readInput <$> getContents
-    print $ solveB input
+solveA :: String -> Int
+solveA =
+    maximum . map pathStrength . getPaths . readInput
+
+solveB :: String -> Int
+solveB =
+    pathStrength . last . sortOn length . sortOn pathStrength . getPaths . readInput

@@ -132,27 +132,24 @@ isMul :: Maybe Instruction -> Bool
 isMul (Just (Mul _ _)) = True
 isMul _ = False
 
-solveA :: Seq Instruction -> Int
-solveA insts =
+readInput :: String -> Seq Instruction
+readInput =
+    Seq.fromList . Either.rights . map (parse parseInstruction "") . lines
+
+solveA :: String -> Int
+solveA input =
     length $ filter (\m -> isMul $ getInst insts m) $ runInstructions insts
     where
+        insts = readInput input
         runInstructions insts =
             List.unfoldr f initialMemory
             where
                 f mem = (\x -> (x,x)) <$> stepSingleProgram insts mem
 
-solveB :: Int
-solveB =
+solveB :: () -> Int
+solveB _ =
     length $ filter (not . isPrime) [start, start + inc .. end]
     where
         start = 93 * 100 + 100000
         end = start + 17000
         inc = 17
-
-readInput :: String -> Seq Instruction
-readInput =
-    Seq.fromList . Either.rights . map (parse parseInstruction "") . lines
-
-main = do
-    input <- readInput <$> getContents
-    print $ solveB

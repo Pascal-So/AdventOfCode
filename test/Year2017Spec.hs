@@ -19,6 +19,13 @@ import qualified Year2017.Day15 as D15
 import qualified Year2017.Day16 as D16
 import qualified Year2017.Day17 as D17
 import qualified Year2017.Day18 as D18
+import qualified Year2017.Day19 as D19
+import qualified Year2017.Day20 as D20
+import qualified Year2017.Day21 as D21
+import qualified Year2017.Day22 as D22
+import qualified Year2017.Day23 as D23
+import qualified Year2017.Day24 as D24
+import qualified Year2017.Day25 as D25
 import Utils (getInput, testPart)
 
 getDay = runIO . getInput 2017
@@ -44,8 +51,7 @@ spec = parallel $ do
     describe "Day 05" $ do
         input <- getDay 05
         testPart 1 D05.solveA input $ 355965
-        -- this test is slow as hell so I decided I don't care about it
-        -- testPart 2 D05.solveB input $ 26948068
+        testPart 2 D05.solveB input $ 26948068
     describe "Day 06" $ do
         input <- getDay 06
         testPart 1 D06.solveA input $ 7864
@@ -98,3 +104,30 @@ spec = parallel $ do
         input <- getDay 18
         testPart 1 D18.solveA input $ 3188
         testPart 2 D18.solveB input $ 7112
+    describe "Day 19" $ do
+        input <- getDay 19
+        testPart 1 D19.solveA input $ "SXWAIBUZY"
+        testPart 2 D19.solveB input $ 16676
+    describe "Day 20" $ do
+        input <- getDay 20
+        testPart 1 D20.solveA input $ 150
+        testPart 2 D20.solveB input $ 657
+    describe "Day 21" $ do
+        input <- getDay 21
+        testPart 1 D21.solveA input $ 176
+        testPart 2 D21.solveB input $ 2368161
+    describe "Day 22" $ do
+        input <- getDay 22
+        testPart 1 D22.solveA input $ 5330
+        testPart 2 D22.solveB input $ 2512103
+    describe "Day 23" $ do
+        input <- getDay 23
+        testPart 1 D23.solveA input $ 8281
+        testPart 2 D23.solveB ()    $ 911
+    describe "Day 24" $ do
+        input <- getDay 24
+        testPart 1 D24.solveA input $ 2006
+        testPart 2 D24.solveB input $ 1994
+    describe "Day 25" $ do
+        -- input is hardcoded for day 25
+        testPart 1 D25.solveA ()    $ 2526

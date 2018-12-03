@@ -9,7 +9,7 @@ getInput year day = do
     filename <- getDataFileName $ printf "inputs/Year%04d/%02d.in" year day
     readFile filename
 
-testPart :: (Show a, Eq a) => Int -> (String -> a) -> String -> a -> Spec
+testPart :: (Show b, Eq b) => Int -> (a -> b) -> a -> b -> Spec
 testPart nr solver input result =
     it ("solves Part " ++ (show nr)) $ do
         solver input `shouldBe` result
