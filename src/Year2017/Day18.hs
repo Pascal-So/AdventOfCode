@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Year2017.Day18 where
+module Year2017.Day18 (solveA, solveB) where
 
 import Data.Sequence (Seq)
 import qualified Data.Sequence as Seq
@@ -152,9 +152,9 @@ initialMemory =
     where
         reg = Seq.fromList $ replicate 26 0
 
-solveA :: Seq Instruction -> Int
-solveA insts =
-    last $ Maybe.catMaybes $ map snd $ runInstructions insts
+solveA :: String -> Int
+solveA =
+    last . Maybe.catMaybes . map snd . runInstructions . readInput
     where
         runInstructions insts =
             List.unfoldr f (initialMemory, Nothing)
@@ -182,10 +182,11 @@ stepProgramPair insts (sA, sB) =
         mA = over received <$> (maybeQueue . snd <$> sB) <*> (fst <$> sA)
         mB = over received <$> (maybeQueue . snd <$> sA) <*> (fst <$> sB)
 
-solveB :: Seq Instruction -> Int
-solveB insts =
+solveB :: String -> Int
+solveB input =
     length $ Maybe.catMaybes $ map snd $ Maybe.catMaybes $ map snd $ executed
     where
+        insts = readInput input
         initA = (initialMemory, Nothing)
         initB = (over registers (Seq.update (ord 'p' - ord 'a') 1) initialMemory, Nothing)
         executed = takeWhile (\(f,s) -> Maybe.isJust f || Maybe.isJust s) $ iterate (stepProgramPair insts) (Just initA, Just initB)
@@ -193,7 +194,3 @@ solveB insts =
 readInput :: String -> Seq Instruction
 readInput =
     Seq.fromList . Either.rights . map (parse parseInstruction "") . lines
-
-main = do
-    input <- readInput <$> getContents
-    print $ solveB input

@@ -15,7 +15,9 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: nightly-2017-08-12
+resolver: lts-12.21
+# Previously used nightly-2017-08-12 during advent of code 2017. Maybe change
+# back if some old stuff breaks for which I haven't added tests yet..
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
