@@ -1,5 +1,4 @@
 {-# OPTIONS_GHC -F -pgmF hspec-discover #-}
--- Only testing current year for speed reasons
 
 -- module Main where
 --
@@ -8,4 +7,3 @@
 --
 -- main :: IO ()
 -- main = hspec spec
---

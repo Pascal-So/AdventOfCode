@@ -7,12 +7,15 @@ data Queue a = Queue { _incoming :: [a]
 instance (Show a) => Show (Queue a) where
     show q = "fromList " ++ show (toList q)
 
+instance (Eq a) => Eq (Queue a) where
+    a == b = toList a == toList b
+
 empty :: Queue a -> Bool
-empty (Queue i o) = 
+empty (Queue i o) =
     null i && null o
 
 fromList :: [a] -> Queue a
-fromList lst = 
+fromList lst =
     Queue [] lst
 
 emptyQueue :: Queue a

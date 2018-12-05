@@ -45,3 +45,4 @@ tests:
     dependencies:
     - adventofcode
     - hspec
+    - QuickCheck
