@@ -4,6 +4,7 @@ import Test.Hspec (Spec, describe, runIO, parallel)
 import qualified Year2018.Day01 as D01
 import qualified Year2018.Day02 as D02
 import qualified Year2018.Day03 as D03
+import qualified Year2018.Day04 as D04
 import Utils (getInput, testPart)
 
 getDay = runIO . getInput 2018
@@ -22,5 +23,10 @@ spec = parallel $ do
 
     describe "Day 03" $ do
         input <- getDay 3
-        testPart 1 D03.solveA input $ 104126
+        -- testPart 1 D03.solveA input $ 104126
         testPart 2 D03.solveB input $ 695
+
+    describe "Day 04" $ do
+        input <- getDay 4
+        testPart 1 D04.solveA input $ 21083
+        testPart 2 D04.solveB input $ 53024
