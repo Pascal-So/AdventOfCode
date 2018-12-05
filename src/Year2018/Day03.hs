@@ -8,7 +8,7 @@ import Text.Megaparsec.Error
 
 import PrefixSumGrid (PrefixSumGrid)
 import qualified PrefixSumGrid as PSG
-import Data.List (foldl')
+import Data.List (foldl', sort)
 
 import Debug.Trace
 
@@ -67,12 +67,22 @@ gridSize (Rectangle l t w h : rest) =
         (rx, ry) = gridSize rest
 
 solveA :: String -> Int
-solveA input = length $ filter (>= (2 :: Int)) $ concat $ PSG.evaluate finalPrefixGrid
+solveA input = sum $ map (doubleClaimLength 0 0 . events) [0..maxy-1]
     where
         rects = map snd $ readInput input
-        (gridWidth, gridHeight) = gridSize rects
-        initPrefixGrid = PSG.generate gridWidth gridHeight :: PrefixSumGrid Int
-        finalPrefixGrid = foldl' (\grid (Rectangle l t w h) -> PSG.addRectangle (l,t) (w,h) 1 grid) initPrefixGrid rects
+        (_,maxy) = gridSize rects
+        events y = sort $ do
+            Rectangle l t w h <- rects
+            if y >= t && y < t + h then
+                [(l, 1), (l + w, -1)]
+            else
+                []
+        doubleClaimLength _ _ [] = 0
+        doubleClaimLength level lastPos ((pos, diff):xs) =
+            doubleClaimLength (level + diff) pos xs + added
+            where
+                added = if level >= 2 then pos - lastPos else 0
+
 
 solveB :: String -> Int
 solveB input = fst . head $ filter good rects
