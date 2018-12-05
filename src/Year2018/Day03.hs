@@ -6,6 +6,12 @@ import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Error
 
+import PrefixSumGrid (PrefixSumGrid)
+import qualified PrefixSumGrid as PSG
+import Data.List (foldl')
+
+import Debug.Trace
+
 type Parser = Parsec Void String
 
 number :: Parser Int
@@ -53,8 +59,20 @@ intersect r1 r2 =
         top r1 + height r1 > top r2 &&
         top r2 + height r2 > top r1
 
+gridSize :: [Rectangle] -> (Int, Int)
+gridSize [] = (0, 0)
+gridSize (Rectangle l t w h : rest) =
+    (max (l + w) rx, max (t + h) ry)
+    where
+        (rx, ry) = gridSize rest
+
 solveA :: String -> Int
-solveA input = 0
+solveA input = length $ filter (>= (2 :: Int)) $ concat $ PSG.evaluate finalPrefixGrid
+    where
+        rects = map snd $ readInput input
+        (gridWidth, gridHeight) = gridSize rects
+        initPrefixGrid = PSG.generate gridWidth gridHeight :: PrefixSumGrid Int
+        finalPrefixGrid = foldl' (\grid (Rectangle l t w h) -> PSG.addRectangle (l,t) (w,h) 1 grid) initPrefixGrid rects
 
 solveB :: String -> Int
 solveB input = fst . head $ filter good rects
