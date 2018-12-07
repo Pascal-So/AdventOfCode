@@ -5,7 +5,6 @@ module Year2018.Day06 (solveA, solveB) where
 import Pos
 import Utils (groupOn, sortOn)
 import Control.Monad
-import Debug.Trace
 import Data.Tuple
 import Data.Maybe
 import Data.Function
@@ -14,11 +13,10 @@ import Data.List (sort, transpose, minimumBy, sortBy, group, groupBy)
 type Range = (Pos, Pos)
 
 coordRange :: [Pos] -> Range
-coordRange points = ((minimum xs - border, minimum ys - border), (maximum xs + border + 1, maximum ys + border + 1))
+coordRange points = ((minimum xs, minimum ys), (maximum xs + 1, maximum ys + 1))
     where
         xs = map fst points
         ys = map snd points
-        border = 0
 
 rangeWidth :: Range -> Int
 rangeWidth ((minx, _), (maxx, _)) = maxx - minx
@@ -71,9 +69,16 @@ solveA input = maximum sizes
             [(p, source)]
 
 solveB :: String -> Int
-solveB input = 0
+solveB input = length $ filter inRegion [(x,y) | x <- x_range, y <- y_range]
     where
         manhattanSumLimit = 10000
         points = readInput input :: [Pos]
         xs = sort $ map fst points
         ys = sort $ map snd points
+        (centre_x, centre_y) = (xs !! halflen, ys !! halflen) where halflen = length points `div` 2
+        ((minx, miny), (maxx, maxy)) = coordRange points
+
+        manhattanSum p = sum $ fmap (manhattan p) points
+        inRegion p = manhattanSum p < manhattanSumLimit
+        x_range = [x | x <- [minx .. maxx-1], inRegion (x, centre_y)]
+        y_range = [y | y <- [miny .. maxy-1], inRegion (centre_x, y)]

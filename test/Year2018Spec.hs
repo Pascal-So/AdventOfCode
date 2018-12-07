@@ -7,6 +7,7 @@ import qualified Year2018.Day03 as D03
 import qualified Year2018.Day04 as D04
 import qualified Year2018.Day05 as D05
 import qualified Year2018.Day06 as D06
+import qualified Year2018.Day07 as D07
 import Utils (getInput, testPart)
 
 getDay = runIO . getInput 2018
@@ -41,4 +42,9 @@ spec = parallel $ do
     describe "Day 06" $ do
         input <- getDay 6
         testPart 1 D06.solveA input $ 4186
-        testPart 2 D06.solveB input $ -1
+        testPart 2 D06.solveB input $ 45509
+
+    describe "Day 07" $ do
+        input <- getDay 7
+        testPart 1 D07.solveA input $ ""
+        testPart 2 D07.solveB input $ -1
