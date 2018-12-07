@@ -68,12 +68,12 @@ runInstruction _ (Mod register value) mem =
 runInstruction TaskA (Rcv _) mem =
     (incrementPointer mem, Nothing)
 runInstruction TaskB (Rcv register) mem =
-    if Queue.empty $ _received mem then
+    if Queue.null $ _received mem then
         (mem, Nothing)
     else
         runInstruction TaskB (Set register (Val val)) $ set received rec mem
         where
-            (val, rec) = Maybe.fromJust $ Queue.deQueue $ _received mem
+            (val, rec) = Maybe.fromJust $ Queue.dequeue $ _received mem
 runInstruction _ (Jgz value shft) mem =
     if valueOf mem value > 0 then
         (newmem, Nothing)
@@ -148,7 +148,7 @@ stepSingleProgram task insts mem =
 
 initialMemory :: Memory
 initialMemory =
-    Memory reg Queue.emptyQueue 0
+    Memory reg Queue.empty 0
     where
         reg = Seq.fromList $ replicate 26 0
 
@@ -172,10 +172,10 @@ stepProgramPair insts (sA, sB) =
     where
         maybeQueue mval q = case mval of
             Nothing -> q
-            Just v -> Queue.enQueue v q
+            Just v -> Queue.enqueue v q
         programWaiting mem =
             case inst of
-                Rcv _ -> Queue.empty $ _received mem
+                Rcv _ -> Queue.null $ _received mem
                 _     -> False
             where
                 inst = Seq.index insts $ _instruction_pointer mem

@@ -11,8 +11,6 @@ import Text.Parsec hiding (State)
 import Data.Char
 import qualified Data.Maybe as Maybe
 import Control.Lens
-import Queue (Queue)
-import qualified Queue as Queue
 
 data Memory = Memory { _registers :: Seq Int
                      , _instruction_pointer :: Int

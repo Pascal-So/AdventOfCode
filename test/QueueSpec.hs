@@ -1,5 +1,7 @@
 module QueueSpec (spec) where
 
+import qualified Prelude as P
+import Prelude hiding (length, null)
 import Test.Hspec
 import Test.QuickCheck
 import Queue
@@ -12,36 +14,46 @@ spec = parallel $ do
             \list -> toList (fromList list) `shouldBe` (list :: [Int])
 
         it "works with an empty queue" $ do
-            toList (emptyQueue :: Queue Int) `shouldBe` []
+            toList (empty :: Queue Int) `shouldBe` []
 
     describe "fromList" $ do
         it "returns elements in the correct order" $ property $
             \list ->
                 let
-                    extractValues q = case deQueue q of
+                    extractValues q = case dequeue q of
                         Just (val, q') -> val : extractValues q'
                         Nothing -> []
                 in
                     extractValues (fromList list) `shouldBe` (list :: [Int])
 
-    describe "deQueue" $ do
+    describe "dequeue" $ do
         it "works on a previously empty list" $ do
-            deQueue (enQueue 1 emptyQueue) `shouldBe` Just (1, emptyQueue)
+            dequeue (enqueue 1 empty) `shouldBe` Just (1, empty)
 
         it "returns Nothing on an empty list" $ do
-            deQueue (emptyQueue :: Queue Int) `shouldBe` Nothing
+            dequeue (empty :: Queue Int) `shouldBe` Nothing
 
-    describe "enQueue" $ do
+    describe "enqueue" $ do
         it "results in a correct list" $ property $
-            \list -> toList (foldr enQueue emptyQueue $ reverse list) == (list :: [Int])
+            \list -> toList (foldr enqueue empty $ reverse list) == (list :: [Int])
 
-    describe "empty" $ do
+    describe "null" $ do
         it "works on an empty list" $
-            empty (emptyQueue :: Queue Int)
+            null (empty :: Queue Int)
 
         it "works on a non-empty list" $
-            not $ empty $ fromList [True]
+            not $ null $ fromList [True]
+
+    describe "length" $ do
+        it "works" $ property $
+            \list -> length (fromList list) == P.length (list :: [Int])
 
     describe "instance Eq" $ do
         it "works" $ property $
-            \list -> deQueue (foldr enQueue emptyQueue (reverse list)) == deQueue (fromList (list :: [Int]))
+            \list -> dequeue (foldr enqueue empty (reverse list)) == dequeue (fromList (list :: [Int]))
+
+    describe "instance Functor" $ do
+        it "works" $ property $
+            \list -> toList (f <$> fromList list) == (f <$> list :: [Int])
+            where
+                f = (+1)
