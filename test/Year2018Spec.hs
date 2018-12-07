@@ -41,10 +41,10 @@ spec = parallel $ do
 
     describe "Day 06" $ do
         input <- getDay 6
-        testPart 1 D06.solveA input $ 4186
+        -- testPart 1 D06.solveA input $ 4186
         testPart 2 D06.solveB input $ 45509
 
     describe "Day 07" $ do
         input <- getDay 7
-        testPart 1 D07.solveA input $ ""
-        testPart 2 D07.solveB input $ -1
+        testPart 1 D07.solveA input $ "DFOQPTELAYRVUMXHKWSGZBCJIN"
+        testPart 2 D07.solveB input $ 1036

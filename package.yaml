@@ -29,6 +29,7 @@ dependencies:
 - mtl
 - fgl
 - primes
+- fingertree
 - hspec
 
 library:

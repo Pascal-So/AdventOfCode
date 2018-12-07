@@ -5,7 +5,7 @@ import Text.Printf
 import Test.Hspec (Spec, shouldBe, it)
 
 import Data.Function
-import Data.List (sortBy, groupBy)
+import Data.List (sort, group, sortBy, groupBy)
 
 
 getInput :: Int -> Int -> IO String
@@ -23,3 +23,6 @@ sortOn f = sortBy (compare `on` f)
 
 groupOn :: (Eq b) => (a -> b) -> [a] -> [[a]]
 groupOn f = groupBy ((==) `on` f)
+
+sortUniq :: (Ord a, Eq a) => [a] -> [a]
+sortUniq = map head . group . sort
