@@ -3,19 +3,30 @@
 module Year2018.Day06 (solveA, solveB) where
 
 import Pos
+import Utils (groupOn, sortOn)
+import Control.Monad
 import Debug.Trace
 import Data.Tuple
+import Data.Maybe
 import Data.Function
 import Data.List (sort, transpose, minimumBy, sortBy, group, groupBy)
-import Data.Graph.Inductive (Gr, Node, Edge, mkUGraph)
-import qualified Data.Graph.Inductive.Query.BFS as BFS
 
-coordRange :: [Pos] -> (Pos, Pos)
+type Range = (Pos, Pos)
+
+coordRange :: [Pos] -> Range
 coordRange points = ((minimum xs - border, minimum ys - border), (maximum xs + border + 1, maximum ys + border + 1))
     where
         xs = map fst points
         ys = map snd points
-        border = 500
+        border = 0
+
+rangeWidth :: Range -> Int
+rangeWidth ((minx, _), (maxx, _)) = maxx - minx
+
+onBorder :: Range -> Pos -> Bool
+onBorder ((minx, miny), (maxx, maxy)) (x,y) =
+    x == minx || x == maxx - 1 || y == miny || y == maxy - 1
+
 
 readInput :: String -> [Pos]
 readInput = map readPos . lines
@@ -26,57 +37,43 @@ readInput = map readPos . lines
                 x = read $ init wordX
                 y = read wordY
 
-gridGraph :: (Pos, Pos) -> Gr () ()
-gridGraph ((minx, miny), (maxx, maxy)) = mkUGraph nodes (edges ++ map swap edges)
+closestPoint :: [Pos] -> Pos -> Maybe Pos
+closestPoint points p =
+    if dist closest == dist second then
+        Nothing
+    else
+        Just closest
     where
-        nodes = [y * (maxx - minx) + x | x <- [minx .. maxx - 1], y <- [miny .. maxy - 1]]
-        edges = [(y * (maxx - minx) + x, y * (maxx - minx) + x + 1) | x <- [minx .. maxx - 2], y <- [miny .. maxy - 1]]
-             ++ [(y * (maxx - minx) + x, (y + 1) * (maxx - minx) + x) | x <- [minx .. maxx - 1], y <- [miny .. maxy - 2]]
-
-minimumOn f = minimumBy (compare `on` f)
-
-sortOn f = sortBy (compare `on` f)
-
-getCoords :: Int -> Int -> Pos
-getCoords width p = (x,y)
-    where
-        x = p `mod` width
-        y = p `div` width
-
-onBorder :: (Pos, Pos) -> Pos -> Bool
-onBorder ((minx, miny), (maxx, maxy)) (x,y) =
-    x == minx || x == maxx - 1 || y == miny || y == maxy - 1
+        dist = manhattan p
+        closest:second:_ = sortOn dist points
 
 solveA :: String -> Int
 solveA input = maximum sizes
     where
         points = readInput input :: [Pos]
-        range = coordRange points :: (Pos, Pos)
-        minx = fst $ fst range :: Int
-        maxx = fst $ snd range :: Int
-        startnodes :: [Node]
-        startnodes = map (\(x,y) -> y * (maxx - minx) + x) points
-        levels :: [[(Node, Int)]]
-        levels = transpose $ map (sort . flip BFS.level (gridGraph range)) startnodes
+        range = coordRange points :: Range
+        ((minx, miny), (maxx, maxy)) = range
 
-        validClosestPoints :: [(Pos, Pos)]
-        validClosestPoints = do
-            dists <- levels
-            let sorted = sortOn (snd . fst) $ zip dists points
-            if snd (fst (sorted!!0)) == snd (fst (sorted!!1)) then
-                []
-            else
-                return (getCoords (maxx - minx) $ fst $ fst $ head sorted, snd $ head sorted)
+        closestPoints :: [(Pos, Maybe Pos)]
+        closestPoints = do
+            x <- [minx .. maxx - 1]
+            y <- [miny .. maxy - 1]
+            let p = (x,y)
+            [(p, closestPoint points p)]
 
         borderPoints :: [Pos]
-        borderPoints = map head $ group $ sort $ map snd $ filter (\(p,_) -> onBorder range p) validClosestPoints
+        borderPoints = map head $ group $ sort $ catMaybes $ map snd $ filter (\(p,_) -> onBorder range p) closestPoints
 
         sizes :: [Int]
-        sizes = map length $ groupBy ((==) `on` snd) $ filter (\(_,source) -> not (source `elem` borderPoints)) validClosestPoints
-
-
--- > 452
--- > 2457
+        sizes = map length $ groupOn snd $ sortOn snd $ do
+            (p, Just source) <- closestPoints
+            guard $ not $ source `elem` borderPoints
+            [(p, source)]
 
 solveB :: String -> Int
 solveB input = 0
+    where
+        manhattanSumLimit = 10000
+        points = readInput input :: [Pos]
+        xs = sort $ map fst points
+        ys = sort $ map snd points
