@@ -1,4 +1,4 @@
-module Year2016.Day01 (solveA, solveB) where
+module Year2016.Day01 where
 
 import Data.List
 import Data.Maybe
@@ -12,12 +12,28 @@ type Heading = Int
 data Turn = Left | Right deriving (Show, Eq)
 type Instruction = (Turn, Int)
 
+-- * Solvers
+
+solveA :: String -> Int
+solveA = manhattan (0,0) . fst . foldl' followInstruction ((0,0), 0) . readInstructions
+
+solveB :: String -> Maybe Int
+solveB input = manhattan (0,0) <$> firstIntersection all
+    where
+        inst = readInstructions input
+        (positions, _:headings) = unzip (scanl followInstruction ((0,0), 0) inst)
+        all = zip3 positions headings $ map ((\x -> x- 1) . snd) inst
+
+-- * Parsing
+
 readInstructions :: String -> [Instruction]
 readInstructions str =
-    map readSingleDir $ map (takeWhile (/= ',')) $ words str
+    readSingleDir . takeWhile (/= ',') <$> words str
     where
         readSingleDir ('R':dist) = (Right, read dist)
         readSingleDir ('L':dist) = (Left, read dist)
+
+-- * Implementation
 
 turn :: Turn -> Heading -> Heading
 turn t h =
@@ -46,10 +62,10 @@ segmentContains (a, heading, len) b =
     where
         dist = min len $ manhattan a b
 
--- returns first intersecting point in segment b
+-- | Returns first intersecting point in segment b
 segmentIntersection :: (Pos, Heading, Int) -> (Pos, Heading, Int) -> Maybe Pos
 segmentIntersection a@(aPos, aHeading, aDist) b@(bPos, bHeading, bDist) =
-    if (aHeading + bHeading) `mod` 2 == 0 then -- parallel
+    if (aHeading + bHeading) `mod` 2 == 0 then  -- parallel
         let bEnd = walkStraight bHeading (bDist +1) bPos
             aEnd = walkStraight aHeading (aDist +1) aPos
         in  if segmentContains a bPos then
@@ -58,7 +74,7 @@ segmentIntersection a@(aPos, aHeading, aDist) b@(bPos, bHeading, bDist) =
                 if aHeading == bHeading then Just aPos else Just aEnd
             else
                 Nothing
-    else -- perpendicular
+    else  -- perpendicular
         let ((horP,horH,horD), (verP,verH,verD)) = if aHeading `mod` 2 == 0 then (b,a) else (a,b)
             dx = min (abs $ fst aPos - fst bPos) horD
             dy = min (abs $ snd aPos - snd bPos) verD
@@ -76,15 +92,3 @@ firstIntersection lst =
     listToMaybe . catMaybes $ tails >>= mapRest segmentIntersection
     where
         tails = take (length lst) $ iterate tail lst
-
-
-
-solveA :: String -> Int
-solveA = manhattan (0,0) . fst . foldl' followInstruction ((0,0), 0) . readInstructions
-
-solveB :: String -> Maybe Int
-solveB input = manhattan (0,0) <$> firstIntersection all
-    where
-        inst = readInstructions input
-        (positions, _:headings) = unzip (scanl followInstruction ((0,0), 0) inst)
-        all = zip3 positions headings $ map ((\x -> x- 1) . snd) inst

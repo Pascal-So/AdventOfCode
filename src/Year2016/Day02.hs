@@ -25,16 +25,16 @@ moveA p d = (\(x,y) -> (limit x, limit y)) $ p `addP` directionToPos d
 
 moveB :: Pos -> Direction -> Pos
 moveB p@(x,y) Up
-    | abs(x) + y == 2 = (x,y)
+    | abs x + y == 2  = (x,y)
     | otherwise       = (x,y+1)
 moveB p@(x,y) Down
-    | abs(x) - y == 2 = (x,y)
+    | abs x - y == 2  = (x,y)
     | otherwise       = (x,y-1)
 moveB p@(x,y) Left
-    | -x + abs(y) == 2 = (x,y)
-    | otherwise        = (x-1,y)
+    | -x + abs y == 2 = (x,y)
+    | otherwise       = (x-1,y)
 moveB p@(x,y) Right
-    | x + abs(y) == 2 = (x,y)
+    | x + abs y == 2  = (x,y)
     | otherwise       = (x+1,y)
 
 charToDir :: Char -> Direction
