@@ -33,7 +33,6 @@ import qualified Data.PriorityQueue.FingerTree as PQ
 
 newtype PriorityQueue a = PQ (PQ.PQueue a a) deriving (Eq, Show)
 
-
 -- | It's not possible to add a Functor instance with the Ord restriction
 -- on the value type, so we'll have to do with this.
 map :: (Ord a, Ord b) => (a -> b) -> PriorityQueue a -> PriorityQueue b

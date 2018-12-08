@@ -20,7 +20,7 @@ getCandidates init =
 
 -- | You spend your whole life trying to stay away from this bitcoin rubbish
 -- and then advent of code comes along and makes you mine in haskell on
--- your poor old cpu...
+-- your poor old cpu.
 --
 -- Anyway this function is really slow so probably don't keep that in the tests.
 solveA :: String -> String
@@ -29,7 +29,7 @@ solveA input =
     where
         candidates = getCandidates $ LBC.pack input
 
--- | This is even slower than solveA, it takes like literally 6 minutes, so have fun
+-- | This is even slower than solveA, it takes like literally 6 minutes so have fun with that.
 solveB :: String -> String
 solveB input =
     fmap snd $ sort $ take 8 $ nubOn fst $ goodPairs

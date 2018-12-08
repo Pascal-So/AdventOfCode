@@ -1,12 +1,19 @@
 module Queue
     ( Queue
-    , null
+
+    -- * Construction
     , empty
-    , length
-    , enqueue
-    , dequeue
+    , singleton
     , fromList
+
+    -- * Inserting
+    , enqueue
+
+    -- * Accessors
+    , dequeue
+    , length
     , toList
+    , null
     ) where
 
 import Prelude hiding (null, length)
@@ -40,6 +47,10 @@ fromList lst =
 empty :: Queue a
 empty =
     Queue [] []
+
+singleton :: a -> Queue a
+singleton a =
+    fromList [a]
 
 toList :: Queue a -> [a]
 toList (Queue i o) =

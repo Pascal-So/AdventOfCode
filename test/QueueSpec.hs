@@ -43,6 +43,13 @@ spec = parallel $ do
         it "works on a non-empty list" $
             not $ null $ fromList [True]
 
+    describe "singleton" $ do
+        it "has correct length" $
+            length (singleton False) `shouldBe` 1
+
+        it "contains correct element" $ property $
+            \el -> dequeue (singleton el) `shouldBe` (Just (el :: Int, empty))
+
     describe "length" $ do
         it "works" $ property $
             \list -> length (fromList list) == P.length (list :: [Int])
