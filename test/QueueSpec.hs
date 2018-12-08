@@ -5,7 +5,6 @@ import Prelude hiding (length, null)
 import Test.Hspec
 import Test.QuickCheck
 import Queue
-import Data.List (foldl')
 
 spec :: Spec
 spec = parallel $ do
@@ -28,7 +27,7 @@ spec = parallel $ do
 
     describe "dequeue" $ do
         it "works on a previously empty list" $ do
-            dequeue (enqueue 1 empty) `shouldBe` Just (1, empty)
+            dequeue (enqueue (1 :: Int) empty) `shouldBe` Just (1, empty)
 
         it "returns Nothing on an empty list" $ do
             dequeue (empty :: Queue Int) `shouldBe` Nothing

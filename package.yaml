@@ -21,16 +21,18 @@ description:         Please see the README on GitHub at <https://github.com/pasc
 
 dependencies:
 - base >= 4.7 && < 5
+- bytestring
 - containers
-- vector
-- lens
-- parsec
-- megaparsec
-- mtl
 - fgl
-- primes
 - fingertree
 - hspec
+- lens
+- megaparsec
+- mtl
+- parsec
+- primes
+- pureMD5
+- vector
 
 library:
   source-dirs: src
@@ -43,6 +45,11 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
+    - -Wcompat
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wredundant-constraints
     dependencies:
     - adventofcode
     - hspec

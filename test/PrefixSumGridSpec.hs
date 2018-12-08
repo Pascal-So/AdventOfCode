@@ -2,7 +2,6 @@ module PrefixSumGridSpec (spec) where
 
 import Test.Hspec
 import PrefixSumGrid
-import Debug.Trace
 
 type Grid = PrefixSumGrid Int
 

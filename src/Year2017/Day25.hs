@@ -40,6 +40,9 @@ initial :: Machine
 initial = (A, tape) where
     tape = Tape.fromList [False]
 
+-- | /Note/: The 'step' function hardcodes my input to day 25,
+--   so you'll have to adjust the table as well as the number
+--   of steps to run my code for your input.
 solveA :: () -> Int
 solveA _ =
     checksum $ foldr (.) id (replicate steps step) initial
