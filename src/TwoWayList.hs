@@ -1,16 +1,20 @@
-module TwoWayList (
-    TWL,
-    toList,
-    toLists,
-    fromList,
-    fromLists,
-    null,
-    (!),
-    index,
-    update,
-    adjust,
-    shift,
-    length
+module TwoWayList
+    ( TWL
+    , toList
+    , toLists
+    , fromList
+    , fromLists
+    , null
+    , (!)
+    , index
+    , update
+    , adjust
+    , shift
+    , length
+    , insertLeft
+    , insertRight
+    , removeLeft
+    , removeRight
     ) where
 
 import Prelude hiding (null, length)
@@ -63,7 +67,7 @@ update n val =
 adjust :: (a -> a) -> Int -> TWL a -> TWL a
 adjust f n (TWL l r) =
     if n >= 0 then
-        let 
+        let
             adjusted = take n r ++ [f (r !! n)] ++ drop (n+1) r
         in
             TWL l adjusted
@@ -79,4 +83,16 @@ shift n (TWL l r) =
     if n >= 0 then
         TWL (reverse (take n r) ++ l) (drop n r)
     else
-        TWL (drop n l) (reverse (take n l) ++ r)
+        TWL (drop (-n) l) (reverse (take (-n) l) ++ r)
+
+insertLeft :: a -> TWL a -> TWL a
+insertLeft a (TWL l r) = TWL (a:l) r
+
+insertRight :: a -> TWL a -> TWL a
+insertRight a (TWL l r) = TWL l (a:r)
+
+removeLeft :: TWL a -> TWL a
+removeLeft (TWL (l:ls) r) = TWL ls r
+
+removeRight :: TWL a -> TWL a
+removeRight (TWL l (r:rs)) = TWL l rs
