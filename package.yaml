@@ -37,6 +37,13 @@ dependencies:
 library:
   source-dirs: src
 
+executables:
+  explore-point-formations:
+    main: explore-point-formations.hs
+    source-dirs: exe
+    dependencies:
+      - adventofcode
+
 tests:
   adventofcode-test:
     main:                Spec.hs

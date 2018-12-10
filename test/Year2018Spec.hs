@@ -61,3 +61,6 @@ spec = parallel $ do
         testPart 1 D09.solveA input 418237
         -- takes about 15 seconds
         -- testPart 2 D09.solveB input 3505711612
+
+    -- Day 10 requires manual work to evaluate and can't
+    -- be tested automatically.
