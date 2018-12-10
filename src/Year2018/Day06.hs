@@ -60,12 +60,12 @@ solveA input = maximum sizes
             [(p, closestPoint points p)]
 
         borderPoints :: [Pos]
-        borderPoints = map head $ group $ sort $ catMaybes $ map snd $ filter (\(p,_) -> onBorder range p) closestPoints
+        borderPoints = map head $ group $ sort $ mapMaybe snd $ filter (\(p,_) -> onBorder range p) closestPoints
 
         sizes :: [Int]
         sizes = map length $ groupOn snd $ sortOn snd $ do
             (p, Just source) <- closestPoints
-            guard $ not $ source `elem` borderPoints
+            guard $ source `notElem` borderPoints
             [(p, source)]
 
 solveB :: String -> Int

@@ -31,7 +31,7 @@ lowestToposort graph queue =
         Nothing -> []
 
 startqueue :: [Node] -> [Edge] -> PriorityQueue Node
-startqueue nodes edges = PQ.fromList $ filter (\x -> not $ x `elem` dependent) nodes
+startqueue nodes edges = PQ.fromList $ filter (`notElem` dependent) nodes
     where
         dependent = sortUniq $ fmap snd edges
 

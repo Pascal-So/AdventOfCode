@@ -46,7 +46,7 @@ parseLine = do
 
 readInput :: String -> [(Int, Rectangle)]
 readInput input =
-    case parse ((sepEndBy1 parseLine newline) <* eof) "problem input" input of
+    case parse (sepEndBy1 parseLine newline <* eof) "problem input" input of
         Left err  -> error $ parseErrorPretty err
         Right res -> res
 

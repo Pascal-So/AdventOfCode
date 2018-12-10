@@ -1,6 +1,6 @@
 module Year2018.Day04 (solveA, solveB) where
 
-import Data.List (group, groupBy, sort, sortBy)
+import Data.List (group, groupBy, sort, sortBy, maximumBy)
 import Data.Function (on)
 
 type Guard = Int
@@ -50,7 +50,7 @@ sumSleep =
     map (\lst -> (fst $ head lst, sum $ map snd lst)) . groupBy ((==) `on` fst) . sort . map (\(g,s,e) -> (g, e-s))
 
 sleepiestGuard :: [(Guard, Int, Int)] -> Guard
-sleepiestGuard = fst . last . sortBy (compare `on` snd) . sumSleep
+sleepiestGuard = fst . maximumBy (compare `on` snd) . sumSleep
 
 sleepiestMinute :: [(Guard, Int, Int)] -> Guard -> (Int, Int)
 sleepiestMinute phases guard =
@@ -76,4 +76,4 @@ solveB input = guard * minute
         events = readInput input
         phases = extractSleepPhases events
         perGuard = map (\g -> (g, sleepiestMinute phases g)) $ extractGuards events
-        (guard, (_, minute)) = last $ sortBy (compare `on` (fst . snd)) perGuard
+        (guard, (_, minute)) = maximumBy (compare `on` (fst . snd)) perGuard
