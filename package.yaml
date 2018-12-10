@@ -40,7 +40,7 @@ library:
 executables:
   explore-point-formations:
     main: explore-point-formations.hs
-    source-dirs: exe
+    source-dirs: exes
     dependencies:
       - adventofcode
 
