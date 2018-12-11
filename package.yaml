@@ -46,7 +46,7 @@ executables:
 
 tests:
   adventofcode-test:
-    main:                Spec.hs
+    main:                spec.hs
     source-dirs:         test
     ghc-options:
     - -threaded
@@ -61,3 +61,12 @@ tests:
     - adventofcode
     - hspec
     - QuickCheck
+
+  doctests:
+    main:                test/doctest-driver.hs
+    ghc-options:
+    - -threaded
+    dependencies:
+    - adventofcode
+    - doctest
+    - doctest-discover

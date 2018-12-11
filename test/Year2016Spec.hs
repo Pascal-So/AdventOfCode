@@ -5,11 +5,11 @@ import qualified Year2016.Day01 as D01
 import qualified Year2016.Day02 as D02
 import qualified Year2016.Day03 as D03
 import qualified Year2016.Day04 as D04
--- import qualified Year2016.Day05 as D05
+import qualified Year2016.Day05 as D05
 import qualified Year2016.Day06 as D06
 import qualified Year2016.Day07 as D07
 
-import Utils (getInput, test)
+import Utils (getInput, test, slow)
 
 getDay = runIO . getInput 2016
 
@@ -36,10 +36,10 @@ spec = parallel $ do
         test "part 2" D04.solveB input 993
 
     -- These tests take about 8 minutes together..
-    -- describe "Day 05" $ do
-    --    input <- getDay 5
-    --    test "part 1" D05.solveA input "f77a0e6e"
-    --    test "part 2" D05.solveB input "999828ec"
+    describe "Day 05" $ do
+       input <- getDay 5
+       slow $ test "part 1" D05.solveA input "f77a0e6e"
+       slow $ test "part 2" D05.solveB input "999828ec"
 
     describe "Day 06" $ do
         input <- getDay 6

@@ -11,16 +11,10 @@ import qualified Year2018.Day07 as D07
 import qualified Year2018.Day08 as D08
 import qualified Year2018.Day09 as D09
 import qualified Year2018.Day11 as D11
-import Utils (getInput, test)
+
+import Utils (getInput, test, slow)
 
 getDay = runIO . getInput 2018
-
-runSlowTests :: Bool
-runSlowTests = False
-
-slow test = if runSlowTests
-    then test
-    else return ()
 
 spec :: Spec
 spec = parallel $ do

@@ -26,7 +26,7 @@ import qualified Year2017.Day22 as D22
 import qualified Year2017.Day23 as D23
 import qualified Year2017.Day24 as D24
 import qualified Year2017.Day25 as D25
-import Utils (getInput, test)
+import Utils (getInput, test, slow)
 
 getDay = runIO . getInput 2017
 
@@ -51,11 +51,11 @@ spec = parallel $ do
     describe "Day 05" $ do
         input <- getDay 05
         test "part 1" D05.solveA input $ 355965
-        test "part 2" D05.solveB input $ 26948068
+        slow $ test "part 2" D05.solveB input $ 26948068
     describe "Day 06" $ do
         input <- getDay 06
-        test "part 1" D06.solveA input $ 7864
-        test "part 2" D06.solveB input $ 1695
+        slow $ test "part 1" D06.solveA input $ 7864
+        slow $ test "part 2" D06.solveB input $ 1695
     describe "Day 07" $ do
         input <- getDay 07
         test "part 1" D07.solveA input $ "veboyvy"
@@ -86,11 +86,11 @@ spec = parallel $ do
         test "part 2" D13.solveB input $ 3850260
     describe "Day 14" $ do
         input <- getDay 14
-        test "part 1" D14.solveA input $ 8190
-        test "part 2" D14.solveB input $ 1134
+        slow $ test "part 1" D14.solveA input $ 8190
+        slow $ test "part 2" D14.solveB input $ 1134
     describe "Day 15" $ do
         input <- getDay 15
-        test "part 1" D15.solveA input $ 631
+        slow $ test "part 1" D15.solveA input $ 631
         test "part 2" D15.solveB input $ 279
     describe "Day 16" $ do
         input <- getDay 16
@@ -111,23 +111,23 @@ spec = parallel $ do
     describe "Day 20" $ do
         input <- getDay 20
         test "part 1" D20.solveA input $ 150
-        test "part 2" D20.solveB input $ 657
+        slow $ test "part 2" D20.solveB input $ 657
     describe "Day 21" $ do
         input <- getDay 21
         test "part 1" D21.solveA input $ 176
-        test "part 2" D21.solveB input $ 2368161
+        slow $ test "part 2" D21.solveB input $ 2368161
     describe "Day 22" $ do
         input <- getDay 22
         test "part 1" D22.solveA input $ 5330
-        test "part 2" D22.solveB input $ 2512103
+        slow $ test "part 2" D22.solveB input $ 2512103
     describe "Day 23" $ do
         input <- getDay 23
-        test "part 1" D23.solveA input $ 8281
+        slow $ test "part 1" D23.solveA input $ 8281
         test "part 2" D23.solveB ()    $ 911
     describe "Day 24" $ do
         input <- getDay 24
-        test "part 1" D24.solveA input $ 2006
-        test "part 2" D24.solveB input $ 1994
+        slow $ test "part 1" D24.solveA input $ 2006
+        slow $ test "part 2" D24.solveB input $ 1994
     describe "Day 25" $ do
         -- input is hardcoded for day 25
         test "part 1" D25.solveA ()    $ 2526

@@ -8,7 +8,7 @@ import qualified Data.Set as Set
 
 data IP = IP
     { _supernet :: ![String]  -- ^ Supernet sequences (outside the square brackets)
-    , _hypernet  :: ![String]  -- ^ Hypernet sequences (inside the square brackets)
+    , _hypernet :: ![String]  -- ^ Hypernet sequences (inside the square brackets)
     } deriving (Show)
 
 instance Semigroup IP where
