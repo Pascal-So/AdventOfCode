@@ -14,7 +14,7 @@ module Utils
 
     -- * Testing
     , getInput
-    , testPart
+    , test
     ) where
 
 import Paths_adventofcode (getDataFileName)
@@ -30,9 +30,13 @@ getInput year day = do
     filename <- getDataFileName $ printf "inputs/Year%04d/%02d.in" year day
     readFile filename
 
-testPart :: (Show b, Eq b) => Int -> (a -> b) -> a -> b -> Spec
-testPart nr solver input result =
-    it ("solves Part " ++ (show nr)) $ do
+test :: (Show b, Eq b) => String    -- ^ name of the subtask
+                       -> (a -> b)  -- ^ solver function
+                       -> a         -- ^ input value
+                       -> b         -- ^ expected output value
+                       -> Spec
+test partName solver input result =
+    it ("solves " ++ partName) $ do
         solver input `shouldBe` result
 
 sortOn :: (Ord b) => (a -> b) -> [a] -> [a]
