@@ -10,10 +10,17 @@ import qualified Year2018.Day06 as D06
 import qualified Year2018.Day07 as D07
 import qualified Year2018.Day08 as D08
 import qualified Year2018.Day09 as D09
--- import qualified Year2018.Day11 as D11
+import qualified Year2018.Day11 as D11
 import Utils (getInput, test)
 
 getDay = runIO . getInput 2018
+
+runSlowTests :: Bool
+runSlowTests = False
+
+slow test = if runSlowTests
+    then test
+    else return ()
 
 spec :: Spec
 spec = parallel $ do
@@ -44,7 +51,7 @@ spec = parallel $ do
 
     describe "Day 06" $ do
         input <- getDay 6
-        -- test "part 1" D06.solveA input 4186
+        slow $ test "part 1" D06.solveA input 4186
         test "part 2" D06.solveB input 45509
 
     describe "Day 07" $ do
@@ -61,12 +68,17 @@ spec = parallel $ do
         input <- getDay 9
         test "part 1" D09.solveA input 418237
         -- takes about 15 seconds
-        -- test "part 2" D09.solveB input 3505711612
+        slow $ test "part 2" D09.solveB input 3505711612
 
     -- Day 10 requires manual work to evaluate and can't
     -- be tested automatically.
+    -- For my input: time 10519 => PLBPGFRR
 
-    -- describe "Day 11" $ do
-    --     input <- getDay 11
-    --     test "part 1 example 1" D11.solveA "18" "33,45"
-    --     test "part 1 example 2" D11.solveA "42" "21,61"
+    describe "Day 11" $ do
+        input <- getDay 11
+        test "part 1 example 1" D11.solveA "18"  "33,45"
+        test "part 1 example 2" D11.solveA "42"  "21,61"
+        test "part 1"           D11.solveA input "241,40"
+        slow $ test "part 2 example 1" D11.solveB "18"  "90,269,16"
+        slow $ test "part 2 example 2" D11.solveB "42"  "232,251,12"
+        slow $ test "part 2"           D11.solveB input "166,75,12"
