@@ -8,7 +8,6 @@ type Trajectory = (Pos, Pos)
 
 -- * Solutions
 
--- | For my input: time 10519 => PLBPGFRR
 exploreData :: String  -- ^ The puzzle input
             -> Int     -- ^ The time
             -> String  -- ^ The positions at that time, in a format suitable for gnuplot
@@ -19,14 +18,14 @@ exploreData input time =
 
 -- * Parsing
 
--- | Assumed format: "<.*,.*>"
+-- | Assumed format: \"\<.*,.*\>\"
 readPos :: String -> Pos
 readPos str = (x, y)
     where
         x = read $ takeWhile (/= ',') $ drop 1 str
         y = read $ takeWhile (/= '>') $ tail $ dropWhile (/= ',') str
 
--- | Assumed format: "position=< 52783,  52786> velocity=<-5, -5>"
+-- | Assumed format: "position=\< 52783,  52786\> velocity=\<-5, -5\>"
 readTrajectory :: String -> Trajectory
 readTrajectory line = (pos, vel)
     where
