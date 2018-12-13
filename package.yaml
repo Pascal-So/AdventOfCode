@@ -67,6 +67,5 @@ tests:
     ghc-options:
     - -threaded
     dependencies:
-    - adventofcode
     - doctest
     - doctest-discover
