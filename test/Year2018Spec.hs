@@ -11,10 +11,12 @@ import qualified Year2018.Day07 as D07
 import qualified Year2018.Day08 as D08
 import qualified Year2018.Day09 as D09
 import qualified Year2018.Day11 as D11
+import qualified Year2018.Day12 as D12
 
-import Utils (getInput, test, slow)
+import Utils (getInput, getExample, test, slow)
 
 getDay = runIO . getInput 2018
+getEx day example = runIO $ getExample 2018 day example
 
 spec :: Spec
 spec = parallel $ do
@@ -76,3 +78,10 @@ spec = parallel $ do
         slow $ test "part 2 example 1" D11.solveB "18"  "90,269,16"
         slow $ test "part 2 example 2" D11.solveB "42"  "232,251,12"
         slow $ test "part 2"           D11.solveB input "166,75,12"
+
+    describe "Day 12" $ do
+        input <- getDay 12
+        ex1   <- getEx  12 01
+        test "part 1 example 1" D12.solveA ex1   325
+        test "part 1"           D12.solveA input 3903
+        test "part 2"           D12.solveB input 3450000002268

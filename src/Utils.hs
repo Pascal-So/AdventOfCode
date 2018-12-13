@@ -14,6 +14,7 @@ module Utils
 
     -- * Testing
     , getInput
+    , getExample
     , test
     , slow
     , runSlowTests
@@ -30,18 +31,27 @@ import Data.List (sort, group, sortBy, groupBy, nubBy)
 runSlowTests :: Bool
 runSlowTests = False
 
--- | Skip the following test if 'runSlowTests' is true
+-- | Skip the following test if 'runSlowTests' is true.
 slow :: SpecWith a -> SpecWith a
 slow test = if runSlowTests
     then test
     else return ()
 
--- | Fetches the input string from the correct directory and file for this task
+-- | Fetches the input string from the correct directory and file for this task.
 getInput :: Int  -- ^ Year
          -> Int  -- ^ Day
          -> IO String
 getInput year day = do
     filename <- getDataFileName $ printf "inputs/Year%04d/%02d.in" year day
+    readFile filename
+
+-- | Fetches the input string for an example task from the correct directoryy and file.
+getExample :: Int  -- ^ Year
+           -> Int  -- ^ Day
+           -> Int  -- ^ Example nr
+           -> IO String
+getExample year day example = do
+    filename <- getDataFileName $ printf "inputs/Year%04d/%02d.ex%02d.in" year day example
     readFile filename
 
 -- | Helper function to add a Hspec testcase
