@@ -72,11 +72,13 @@ spec = parallel $ do
 
     describe "Day 11" $ do
         input <- getDay 11
-        test "part 1 example 1" D11.solveA "18"  "33,45"
-        test "part 1 example 2" D11.solveA "42"  "21,61"
+        ex1   <- getEx  11 01
+        ex2   <- getEx  11 02
+        test "part 1 example 1" D11.solveA ex1   "33,45"
+        test "part 1 example 2" D11.solveA ex2   "21,61"
         test "part 1"           D11.solveA input "241,40"
-        slow $ test "part 2 example 1" D11.solveB "18"  "90,269,16"
-        slow $ test "part 2 example 2" D11.solveB "42"  "232,251,12"
+        slow $ test "part 2 example 1" D11.solveB ex1   "90,269,16"
+        slow $ test "part 2 example 2" D11.solveB ex2   "232,251,12"
         slow $ test "part 2"           D11.solveB input "166,75,12"
 
     describe "Day 12" $ do
