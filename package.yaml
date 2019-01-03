@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/pasc
 
 dependencies:
 - base >= 4.7 && < 5
+- array
 - bytestring
 - containers
 - fgl
@@ -49,9 +50,9 @@ tests:
     main:                spec.hs
     source-dirs:         test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+    # - -threaded
+    # - -rtsopts
+    # - -with-rtsopts=-N
     - -Wall
     - -Wcompat
     - -Wincomplete-record-updates

@@ -7,8 +7,6 @@ import qualified Data.Vector as Vec
 import Data.List (sort)
 import Data.Function (on)
 
-import Debug.Trace
-
 -- | The rules are indexed by converting their source pattern from
 -- a binary representation with the first digit being the MSB to
 -- their index in the vector.

@@ -6,8 +6,6 @@ import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Error
 
-import PrefixSumGrid (PrefixSumGrid)
-import qualified PrefixSumGrid as PSG
 import Data.List (foldl', sort)
 
 import Debug.Trace
